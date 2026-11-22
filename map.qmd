@@ -4,12 +4,15 @@ title: "Map"
 
 ```{r}
 #| message: false
-#| cache: true
 
 library(tidyverse)
 library(sf)
 library(rnaturalearth)
 library(lubridate)
+```
+
+```{r}
+#| cache: true
 
 mallards <- read_csv("data/mallards.csv") |>
   mutate(
@@ -34,7 +37,7 @@ saveRDS(mallards, "data/mallards.rds")
 #| fig-width: 10
 #| fig-height: 7.5
 
-countries <- ne_countries(scale = "medium", returnclass = "sf")
+countries <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
 
 mallards |>
   filter(between(lat, 47, 55), between(long, 8, 25)) |>
