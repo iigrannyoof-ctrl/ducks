@@ -1,0 +1,38 @@
+---
+title: "Seasons"
+---
+
+```{r}
+#| message: false
+
+library(tidyverse)
+library(ggridges)
+
+mallards <- readRDS("data/mallards.rds")
+```
+
+```{r}
+#| message: false
+#| fig-width: 9
+#| fig-height: 7
+
+mallards |>
+  filter(!is.na(speed), speed <= 30) |>
+  ggplot(aes(x = speed, y = month, fill = after_stat(x))) +
+  geom_density_ridges(
+    scale = 1.1,
+    rel_min_height = 0.01,
+    color = "white",
+    linewidth = 0.3
+  ) +
+  scale_fill_viridis_c(option = "plasma", name = "Speed (m/s)") +
+  scale_y_discrete(limits = rev(month.name)) +
+  labs(
+    title = "Mallard Speed Distributions by Month",
+    subtitle = "GPS movement speeds filtered to 30 m/s or less",
+    x = "Speed (m/s)",
+    y = "Month"
+  ) +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank())
+```

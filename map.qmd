@@ -1,0 +1,64 @@
+---
+title: "Map"
+---
+
+```{r}
+#| message: false
+#| cache: true
+
+library(tidyverse)
+library(sf)
+library(rnaturalearth)
+library(lubridate)
+
+mallards <- read_csv("data/mallards.csv") |>
+  mutate(
+    timestamp = ymd_hms(timestamp, tz = "UTC"),
+    month = factor(month(timestamp, label = TRUE, abbr = FALSE), levels = month.name),
+    month_num = month(timestamp),
+    year = year(timestamp),
+    season = case_when(
+      month_num %in% 3:5 ~ "Spring",
+      month_num %in% 6:8 ~ "Summer",
+      month_num %in% 9:11 ~ "Autumn",
+      TRUE ~ "Winter"
+    ),
+    season = factor(season, levels = c("Spring", "Summer", "Autumn", "Winter"))
+  )
+
+saveRDS(mallards, "data/mallards.rds")
+```
+
+```{r}
+#| message: false
+#| fig-width: 10
+#| fig-height: 7.5
+
+countries <- ne_countries(scale = "medium", returnclass = "sf")
+
+mallards |>
+  filter(between(lat, 47, 55), between(long, 8, 25)) |>
+  ggplot() +
+  geom_sf(data = countries, fill = "grey96", color = "grey65", linewidth = 0.25) +
+  geom_point(
+    aes(x = long, y = lat, color = duck_id),
+    alpha = 0.55,
+    size = 0.5
+  ) +
+  coord_sf(xlim = c(8, 25), ylim = c(47, 55), expand = FALSE) +
+  scale_color_viridis_d(option = "turbo", guide = guide_legend(ncol = 4)) +
+  labs(
+    title = "Where Do Mallards Go?",
+    subtitle = "GPS locations of 52 Mallards tracked from Lake Constance",
+    x = "Longitude",
+    y = "Latitude",
+    color = "Duck ID"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 6),
+    legend.key.height = unit(0.25, "cm"),
+    panel.grid.minor = element_blank()
+  )
+```

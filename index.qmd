@@ -1,0 +1,9 @@
+---
+title: "Welcome"
+---
+
+Mallards (*Anas platyrhynchos*) are familiar ducks found across the Northern Hemisphere. Between 2007 and 2017, researchers tracked 52 Mallards at Lake Constance, a large freshwater lake bordering Germany, Switzerland, and Austria. The study produced 83,279 GPS observations that reveal how individual ducks move throughout Central Europe.
+
+The **Map** page shows where the ducks traveled. Most recorded locations cluster near Lake Constance, although some birds moved hundreds of kilometers north and east. The **Seasons** page explores how movement speed changes throughout the year, with most fixes showing slow movement and greater activity during the summer months.
+
+The data comes from Korner, Sauter, Fiedler, and Jenni (2016) and is publicly available through [Movebank](https://movebank.org/).
